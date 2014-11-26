@@ -45,8 +45,9 @@ object Chapter4_Option extends App {
       }
     }
 
-//    def sequence[A](as: List[Option[A]]): Option[List[A]] =
+    def sequence[A](as: List[Option[A]]): Option[List[A]] = traverse(as)(identity)
 
+    println("sequence: " + sequence(List(Some(1), Some(2), Some(3))))
   }
 
   val a1: Option[Int] = Some(3)
@@ -76,7 +77,7 @@ object Chapter4_Option extends App {
       } yield f(a, b)
   }
 
-  println(Option.traverse(List(1,2,3,4))(x => if (x < 0) None else Some(x)))
-  println(Option.traverse(List(1,2,3,4))(x => if (x < 2) None else Some(x)))
+  println(Option.traverse(List(1, 2, 3, 4))(x => if (x < 0) None else Some(x)))
+  println(Option.traverse(List(1, 2, 3, 4))(x => if (x < 2) None else Some(x)))
 
 }
