@@ -78,6 +78,31 @@ object Chapter5_Stream extends App {
       case (Cons(head, tail), n) if n > 0 => Some((head(), (tail(), n - 1)))
       case _ => None
     }
+
+    def takeWhile3(f: A => Boolean): Stream[A] = unfold(this) {
+      case Cons(head, tail) if f(head()) => Some((head(), tail()))
+      case _ => None
+    }
+
+    def zipWith[B](s: Stream[B]): Stream[(A, B)] = unfold((this, s)) {
+      case (Cons(head, tail), Cons(head2, tail2)) => Some((head(), head2()), (tail(), tail2()))
+      case _ => None
+    }
+
+    def startsWith[A](s: Stream[A]): Boolean = (this zipWith s) forAll { case ((a, b)) => a == b }
+
+    def tails: Stream[Stream[A]] = unfold(this) {
+      case Cons(head, tail) => Some(Cons(head, tail) -> tail())
+      case _ => None
+    }
+
+    def exists(f: A => Boolean): Boolean = this match {
+      case Cons(h, t) if f(h()) => true
+      case Cons(h, t) => t().exists(f)
+      case _ => false
+    }
+
+    def hasSubsequence[A](s: Stream[A]) = this.tails.exists(_.startsWith(s))
   }
 
   case object Empty extends Stream[Nothing]
@@ -122,7 +147,6 @@ object Chapter5_Stream extends App {
 
     def ones: Stream[Int] = unfold(1)(_ => Some(1, 1))
 
-
   }
 
   // cut here
@@ -151,4 +175,7 @@ object Chapter5_Stream extends App {
   println(ones take 8)
   println((naturals map2 (_ * 3)) take 10)
   println((naturals map2 (_ * 3)) take2 10)
+  println(naturals takeWhile3 (_ < 5))
+  println(naturals.tails.take(5).map { z => z.take(3) })
+  println(from(5).take(10) hasSubsequence from(8).take(5))
 }
