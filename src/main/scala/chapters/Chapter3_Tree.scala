@@ -1,3 +1,5 @@
+package chapters
+
 
 
 sealed trait Tree[+A]

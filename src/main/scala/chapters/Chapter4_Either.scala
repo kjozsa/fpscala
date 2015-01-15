@@ -1,3 +1,5 @@
+package chapters
+
 
 object Chapter4_Either extends App {
 

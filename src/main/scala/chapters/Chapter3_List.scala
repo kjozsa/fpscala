@@ -1,3 +1,5 @@
+package chapters
+
 
 
 object Chapter3_List extends App {
@@ -114,7 +116,7 @@ object Chapter3_List extends App {
 
   // == Excercise 3.1
 
-  import Chapter3_List.List._
+  import chapters.Chapter3_List.List._
 
   val x = List(1, 2, 3, 4, 5) match {
     case Cons(x, Cons(2, Cons(4, _))) => x
